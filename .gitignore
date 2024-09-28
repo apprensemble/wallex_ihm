@@ -1,0 +1,6 @@
+.venv
+config_suivi_unitaire_real.json
+wallex_config
+wallex_common_data
+wallex_csv
+__pycache__
