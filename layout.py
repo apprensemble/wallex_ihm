@@ -50,21 +50,18 @@ layout = html.Div([
   dcc.Store(id='mes-colonnes',data={'liste_colonnes':colonnes,'initial_df':sf.to_dict('records'),'etat_colonnes':etat_colonnes}),
   html.Div(id="output"),
 
-        dbc.Modal(
-            [
-                dbc.ModalHeader("More information about selected row"),
-                dbc.ModalBody(id="row-selection-modal-content"),
-                html.Div([
-                dcc.Input(id='tp', type='number',  min=0, max=1000000, placeholder="tp",style={'marginLeft':'10px','inline':'true'}),
-                dcc.Input(id='sl', type='number',  min=0, max=1000000, placeholder="sl",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
-                dcc.Input(id='ppmax', type='number',  min=0, max=1000000, placeholder="ppmax",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
-                dcc.Input(id='capital', type='number',  min=0, max=1000000, placeholder="capital",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
-            html.Iframe(srcDoc=open("assets/tradingView.html").read(), 
-                width='100%', 
-                height='350'),
-            ]),
-                dbc.ModalFooter(dbc.Button("Close", id="row-selection-modal-close", className="ml-auto")),
-            ],
-            id="row-selection-modal",
-        ),
+  dbc.Modal( [
+    dbc.ModalHeader("More information about selected row"),
+    dbc.ModalBody(id="row-selection-modal-content"),
+    html.Div([
+      dcc.Input(id='tp', type='number',  min=0, max=1000000, placeholder="tp",style={'marginLeft':'10px','inline':'true'}),
+      dcc.Input(id='sl', type='number',  min=0, max=1000000, placeholder="sl",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      dcc.Input(id='ppmax', type='number',  min=0, max=1000000, placeholder="ppmax",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      dcc.Input(id='capital', type='number',  min=0, max=1000000, placeholder="capital",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      html.Iframe(srcDoc=open("assets/tradingView.html").read(), width='100%', height='350'),
+    ]),
+    dbc.ModalFooter(dbc.Button("Close", id="row-selection-modal-close", className="ml-auto")),
+  ],
+  id="row-selection-modal",
+  ),
 ])
