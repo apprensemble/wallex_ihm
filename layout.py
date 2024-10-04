@@ -91,7 +91,7 @@ layout = html.Div([
                     style={"cursor": "pointer", "marginLeft": "5px"}
                 ),
                 dbc.Tooltip(
-                    "Pourcentage que vous etes pret à perdre.",
+                    "Pourcentage du capital que vous etes pret à perdre.",
                     target="ppmax-target",
                     placement="right",
                 ),
