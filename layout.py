@@ -45,7 +45,7 @@ layout = html.Div([
           "animateRows": True,  # Ajoute des animations de déplacement
       },
       columnState=etat_colonnes,
-      style={'height':'200px'},
+      style={'height':'600px'},
   ),
   dcc.Store(id='mes-colonnes',data={'liste_colonnes':colonnes,'initial_df':sf.to_dict('records'),'etat_colonnes':etat_colonnes}),
   html.Div(id="output"),
@@ -54,11 +54,65 @@ layout = html.Div([
     dbc.ModalHeader("More information about selected row"),
     dbc.ModalBody(id="row-selection-modal-content"),
     html.Div([
-      dcc.Input(id='tp', type='number',  min=0, max=1000000, placeholder="tp",style={'marginLeft':'10px','inline':'true'}),
+      html.Div([
+      html.Label("tp", style={"display": "inline-block", "width": "150px", "textAlign": "right"}),
+      dcc.Input(id='tp', type='number',  min=0, max=1000000, placeholder="tp",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      html.Span(
+                    " ⓘ", 
+                    id="tp-target", 
+                    style={"cursor": "pointer", "marginLeft": "5px"}
+                ),
+                dbc.Tooltip(
+                    "Take Profit",
+                    target="tp-target",
+                    placement="right",
+                ),
+      ]),
+      html.Div([
+      html.Label("sl", style={"display": "inline-block", "width": "150px", "textAlign": "right"}),
       dcc.Input(id='sl', type='number',  min=0, max=1000000, placeholder="sl",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      html.Span(
+                    " ⓘ", 
+                    id="sl-target", 
+                    style={"cursor": "pointer", "marginLeft": "5px"}
+                ),
+                dbc.Tooltip(
+                    "Stop Loss",
+                    target="sl-target",
+                    placement="right",
+                ),
+      ]),
+      html.Div([
+      html.Label("ppmax", style={"display": "inline-block", "width": "150px", "textAlign": "right"}),
       dcc.Input(id='ppmax', type='number',  min=0, max=1000000, placeholder="ppmax",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      html.Span(
+                    " ⓘ", 
+                    id="ppmax-target", 
+                    style={"cursor": "pointer", "marginLeft": "5px"}
+                ),
+                dbc.Tooltip(
+                    "Pourcentage que vous etes pret à perdre.",
+                    target="ppmax-target",
+                    placement="right",
+                ),
+      ]),
+      html.Div([
+      html.Label("capital", style={"display": "inline-block", "width": "150px", "textAlign": "right"}),
       dcc.Input(id='capital', type='number',  min=0, max=1000000, placeholder="capital",style={'marginRight':'10px','marginLeft':'10px','inline':'true'}),
+      html.Span(
+                    " ⓘ", 
+                    id="capital-target", 
+                    style={"cursor": "pointer", "marginLeft": "5px"}
+                ),
+                dbc.Tooltip(
+                    "Capital d'investissement",
+                    target="capital-target",
+                    placement="right",
+                ),
+      ]),
+      html.Div([
       html.Iframe(srcDoc=open("assets/tradingView.html").read(), width='100%', height='350'),
+      ]),
     ]),
     dbc.ModalFooter(dbc.Button("Close", id="row-selection-modal-close", className="ml-auto")),
   ],

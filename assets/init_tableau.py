@@ -71,7 +71,9 @@ def init_coldef(colonnes):
 #fonctions de preparation
 def creation_tableau_de_base(colonnes,ts):
     df = ts.get_full_df_with_rr()
-    df['old_usd_balance'] = df['ref_exchange_rate'] * df['native_balance'] 
+    df['old_usd_balance'] = df['ref_exchange_rate'] * df['ref_native_balance'] 
+    #df.loc[df['strategie'] != 'invested','old_usd_balance'] = df['ref_exchange_rate'] * df['native_balance']
+    #df.loc[df['strategie'] == 'invested','old_usd_balance'] = df['ref_exchange_rate'] * df['ref_native_balance']
     df['gainNR'] = df['usd_balance'] - df['old_usd_balance']
     df.loc[df['gainNR'] == 0, 'gainNR'] = 0.000001
     df.loc[df['usd_balance'] == 0, 'usd_balance'] = 0.000001
