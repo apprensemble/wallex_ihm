@@ -16,8 +16,9 @@ def update_graph(values_chosen,theme_chosen,filtered,data):
     df = pd.DataFrame(data)
   else:
     df = pd.DataFrame(filtered)
-  titre_suffixe = f"- total = {round(df['usd_balance'].sum(),2)} / gainNR = {round(df['gainNR'].sum(),2)}"
-  fig_front = px.pie(df, names=theme_chosen, values=values_chosen, title=f"vue simple {theme_chosen}/{values_chosen} {titre_suffixe}", labels={"value":values_chosen,"variable":theme_chosen})
+  titre_pct = f"~= pct_up : {round(df['gainNR'].sum() / df['usd_balance'].sum() * 100,2)} %"
+  titre_suffixe = f"- total = {round(df['usd_balance'].sum(),2)} / {values_chosen} = {round(df[values_chosen].sum(),2)}"
+  fig_front = px.pie(df, names=theme_chosen, values=values_chosen, title=f"vue simple {theme_chosen}/{values_chosen} {titre_suffixe} {titre_pct}", labels={"value":values_chosen,"variable":theme_chosen})
   #fig = px.sunburst(sf, path=[theme_chosen], values=values_chosen, color='gainNR')
   fig_front.update_traces(textposition='inside', textinfo='percent+label')
   fig_front.update_layout(

@@ -2,6 +2,9 @@ from dash import ctx, no_update,html,dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output,State
 from app_instance import app
+from assets import init_data as inid
+
+ts = inid.ts
 
 @app.callback(
     Output("row-selection-modal", "is_open"),
@@ -42,9 +45,48 @@ def update_tableau(on_click,selectedRows,tp,sl,ppmax,capital,rowData):
         row_to_update = selectedRows[0]
         for row in rowData:
             if row == row_to_update:
+                r = simulate_rr(row['token'].split("_")[-1],row['exchange_rate'],row['usd_balance'],row['native_balance'],tp,sl,ppmax,capital)
                 row['tp'] = tp
                 row['sl'] = sl
                 row['ppmax'] = ppmax
                 row['capital'] = capital
+                row['rr'] = r['rr']
+                row['gainEst'] = r['ge']
+                row['perteEst'] = r['pe']
         return rowData
     return rowData
+
+@app.callback(
+    Output("output-simulation","children"),
+    Input("row-selection-modal-launch-simulation", "n_clicks"),
+    State("ag-grid","selectedRows"),
+    State("tp","value"),
+    State("sl","value"),
+    State("ppmax","value"),
+    State("capital","value"),
+    State("ag-grid","rowData"),
+)
+def update_simulation(on_simulation,selectedRows,tp,sl,ppmax,capital,rowData):
+    if selectedRows and on_simulation:
+        token = selectedRows[0]['token'].split("_")[-1]
+        prix = selectedRows[0]['exchange_rate']
+        usd_balance = selectedRows[0]['usd_balance']
+        native_balance = selectedRows[0]['native_balance']
+        r = simulate_rr(token,prix,usd_balance,native_balance,tp,sl,ppmax,capital)
+        return f"{r}"
+    else:
+        return no_update
+        
+
+def simulate_rr(token,prix,usd_balance,native_balance,tp,sl,ppmax,capital):
+    ts.rr.set_capital(ppmax,capital,token)
+    r = ts.rr.simulation_rr(token,tp,sl,prix,investissement=usd_balance,save_rr=True)[token]
+    rr = r['rr']
+    ge = r['gainEst']
+    pe = r['perteEst']
+    rc = ts.rr.simulation_rr(token,tp,sl,prix=prix)[token]
+    taille_position = rc['taille_position']
+    gec = rc['gainEst']
+    pec = rc['perteEst']
+    ts.rr.save_rr()
+    return {"taille_position_reelle":native_balance,"rr":rr,"ge":ge,"pe":pe,"gec":gec,"pec":pec,"taille_position":taille_position}
